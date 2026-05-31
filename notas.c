@@ -7,6 +7,8 @@
 void pedirNotas(int nEst, float notas[][N_ASIG]);
 void calcularPromediosEstudiantes(int nEst, float notas[][N_ASIG], float promEst[]);
 void calcularPromediosAsignaturas(int nEst, float notas[][N_ASIG], float promAsig[]);
+void buscarMaxMinEstudiantes(int nEst, float notas[][N_ASIG], float maxEst[], float minEst[]);
+void buscarMaxMinAsignaturas(int nEst, float notas[][N_ASIG], float maxAsig[], float minAsig[]);
 
 int main() {
     int nEst;
@@ -34,6 +36,8 @@ int main() {
     
     calcularPromediosEstudiantes(nEst, notas, promEst);
     calcularPromediosAsignaturas(nEst, notas, promAsig);
+    buscarMaxMinEstudiantes(nEst, notas, maxEst, minEst);
+    buscarMaxMinAsignaturas(nEst, notas, maxAsig, minAsig);
     
     printf("\n=== PROMEDIOS POR ESTUDIANTE ===\n");
     for (int i = 0; i < nEst; i++) {
@@ -43,6 +47,16 @@ int main() {
     printf("\n=== PROMEDIOS POR ASIGNATURA ===\n");
     for (int j = 0; j < N_ASIG; j++) {
         printf("Asignatura %d: %.2f\n", j + 1, promAsig[j]);
+    }
+    
+    printf("\n=== MAXIMOS Y MINIMOS POR ESTUDIANTE ===\n");
+    for (int i = 0; i < nEst; i++) {
+        printf("Estudiante %d: Max=%.2f, Min=%.2f\n", i + 1, maxEst[i], minEst[i]);
+    }
+    
+    printf("\n=== MAXIMOS Y MINIMOS POR ASIGNATURA ===\n");
+    for (int j = 0; j < N_ASIG; j++) {
+        printf("Asignatura %d: Max=%.2f, Min=%.2f\n", j + 1, maxAsig[j], minAsig[j]);
     }
     
     return 0;
@@ -80,5 +94,35 @@ void calcularPromediosAsignaturas(int nEst, float notas[][N_ASIG], float promAsi
             suma += notas[i][j];
         }
         promAsig[j] = suma / nEst;
+    }
+}
+
+void buscarMaxMinEstudiantes(int nEst, float notas[][N_ASIG], float maxEst[], float minEst[]) {
+    for (int i = 0; i < nEst; i++) {
+        maxEst[i] = notas[i][0];
+        minEst[i] = notas[i][0];
+        for (int j = 1; j < N_ASIG; j++) {
+            if (notas[i][j] > maxEst[i]) {
+                maxEst[i] = notas[i][j];
+            }
+            if (notas[i][j] < minEst[i]) {
+                minEst[i] = notas[i][j];
+            }
+        }
+    }
+}
+
+void buscarMaxMinAsignaturas(int nEst, float notas[][N_ASIG], float maxAsig[], float minAsig[]) {
+    for (int j = 0; j < N_ASIG; j++) {
+        maxAsig[j] = notas[0][j];
+        minAsig[j] = notas[0][j];
+        for (int i = 1; i < nEst; i++) {
+            if (notas[i][j] > maxAsig[j]) {
+                maxAsig[j] = notas[i][j];
+            }
+            if (notas[i][j] < minAsig[j]) {
+                minAsig[j] = notas[i][j];
+            }
+        }
     }
 }
