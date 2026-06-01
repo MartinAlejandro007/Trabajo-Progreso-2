@@ -9,6 +9,7 @@ void calcularPromediosEstudiantes(int nEst, float notas[][N_ASIG], float promEst
 void calcularPromediosAsignaturas(int nEst, float notas[][N_ASIG], float promAsig[]);
 void buscarMaxMinEstudiantes(int nEst, float notas[][N_ASIG], float maxEst[], float minEst[]);
 void buscarMaxMinAsignaturas(int nEst, float notas[][N_ASIG], float maxAsig[], float minAsig[]);
+void contarAprobadosReprobados(int nEst, float notas[][N_ASIG], int apr[], int rep[]);
 
 int main() {
     int nEst;
@@ -38,6 +39,7 @@ int main() {
     calcularPromediosAsignaturas(nEst, notas, promAsig);
     buscarMaxMinEstudiantes(nEst, notas, maxEst, minEst);
     buscarMaxMinAsignaturas(nEst, notas, maxAsig, minAsig);
+    contarAprobadosReprobados(nEst, notas, apr, rep);
     
     printf("\n=== PROMEDIOS POR ESTUDIANTE ===\n");
     for (int i = 0; i < nEst; i++) {
@@ -57,6 +59,11 @@ int main() {
     printf("\n=== MAXIMOS Y MINIMOS POR ASIGNATURA ===\n");
     for (int j = 0; j < N_ASIG; j++) {
         printf("Asignatura %d: Max=%.2f, Min=%.2f\n", j + 1, maxAsig[j], minAsig[j]);
+    }
+    
+    printf("\n=== APROBADOS Y REPROBADOS POR ASIGNATURA ===\n");
+    for (int j = 0; j < N_ASIG; j++) {
+        printf("Asignatura %d: Aprobados=%d, Reprobados=%d\n", j + 1, apr[j], rep[j]);
     }
     
     return 0;
@@ -122,6 +129,20 @@ void buscarMaxMinAsignaturas(int nEst, float notas[][N_ASIG], float maxAsig[], f
             }
             if (notas[i][j] < minAsig[j]) {
                 minAsig[j] = notas[i][j];
+            }
+        }
+    }
+}
+
+void contarAprobadosReprobados(int nEst, float notas[][N_ASIG], int apr[], int rep[]) {
+    for (int j = 0; j < N_ASIG; j++) {
+        apr[j] = 0;
+        rep[j] = 0;
+        for (int i = 0; i < nEst; i++) {
+            if (notas[i][j] >= NOTA_APR) {
+                apr[j]++;
+            } else {
+                rep[j]++;
             }
         }
     }
